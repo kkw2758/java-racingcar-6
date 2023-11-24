@@ -1,7 +1,10 @@
 package racingcar.domain;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
+import racingcar.controller.dto.response.CarsResponse;
 
 public class Cars {
     private static final int MIN_CARS_LENGTH = 2;
@@ -18,6 +21,16 @@ public class Cars {
         return new Cars(cars.stream()
                 .map(Car::from)
                 .toList());
+    }
+
+    public CarsResponse toResponse() {
+        Map<String, Integer> carResponse = new HashMap<>();
+        cars.forEach(car -> carResponse.put(car.getCarName().getValue(), car.getPosition()));
+        return new CarsResponse(carResponse);
+    }
+
+    public int getSize() {
+        return cars.size();
     }
 
     public void moveCars(List<Boolean> moveInfo) {
