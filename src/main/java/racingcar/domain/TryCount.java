@@ -25,6 +25,6 @@ public class TryCount {
     }
 
     private static boolean checkTryCountRange(int tryCount) {
-        return tryCount >= MIN_TRY_COUNT;
+        return tryCount < MIN_TRY_COUNT;
     }
 }
