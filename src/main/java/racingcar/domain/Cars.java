@@ -1,16 +1,25 @@
 package racingcar.domain;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Cars {
     private static final int MIN_CARS_LENGTH = 2;
+    private static final int START_RANGE = 0;
     private final List<Car> cars;
 
     private Cars(List<Car> cars) {
         this.cars = cars;
     }
 
+    public void moveCars(List<Boolean> moveInfo) {
+        IntStream.range(START_RANGE, cars.size())
+                .filter(moveInfo::get)
+                .forEach(i -> cars.get(i).moveCar());
+    }
+
     public static Cars from(List<String> cars) {
+        validateCars(cars);
         return new Cars(cars.stream()
                 .map(Car::from)
                 .toList());
