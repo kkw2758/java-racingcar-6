@@ -5,11 +5,19 @@ import java.util.stream.IntStream;
 
 public class Cars {
     private static final int MIN_CARS_LENGTH = 2;
+    private static final int INITIAL_CAR_POSITION = 0;
     private static final int START_RANGE = 0;
     private final List<Car> cars;
 
     private Cars(List<Car> cars) {
         this.cars = cars;
+    }
+
+    public static Cars from(List<String> cars) {
+        validateCars(cars);
+        return new Cars(cars.stream()
+                .map(Car::from)
+                .toList());
     }
 
     public void moveCars(List<Boolean> moveInfo) {
@@ -18,11 +26,20 @@ public class Cars {
                 .forEach(i -> cars.get(i).moveCar());
     }
 
-    public static Cars from(List<String> cars) {
-        validateCars(cars);
-        return new Cars(cars.stream()
-                .map(Car::from)
-                .toList());
+    public int getMaxPosition() {
+        return cars.stream()
+                .map(Car::getPosition)
+                .mapToInt(Integer::intValue)
+                .max()
+                .orElse(INITIAL_CAR_POSITION);
+    }
+
+    public List<String> getCarNamesAtPosition(int position) {
+        return cars.stream()
+                .filter(car -> car.getPosition() == position)
+                .map(Car::getCarName)
+                .map(CarName::getValue)
+                .toList();
     }
 
     private static void validateCars(List<String> cars) {
